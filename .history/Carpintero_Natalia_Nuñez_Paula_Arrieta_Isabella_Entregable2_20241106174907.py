@@ -86,7 +86,7 @@ def Mostrar_Grafo(G):
     for edge in G.edges(data=True):
         print(f"{edge[0]} - {edge[1]}: {edge[2]['weight']}")
 
-
+#Mostrar_Grafo(Grafo_General)
 # Crear el grafo
 Grafo_General = nx.Graph()
 with open('correlaciones.txt', 'r') as file:

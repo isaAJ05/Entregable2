@@ -35,41 +35,32 @@ def portafolio_maximo_beneficio():
     portafolios_validos = [] # portafolios que cumplen con las condiciones osea que la correlacion sea menor a la maxima
     for i in range(acciones_minimas, len(acciones) + 1): #desde las acciones minimas hasta el total de acciones
         for subset in itertools.combinations(acciones, i): # hacer combinaciones de las acciones
-            print("Esto es subset (combinando 3 en este caso)", subset)
-            grafito = Grafo_General.subgraph(subset) #subgrafo con las acciones seleccionadas
-            es_valido = True
-            for u, v in grafito.edges: #para cada arista en el subgrafo (osea para cada acción)
-                if abs(grafito[u][v]['weight']) > correlacion_maxima: #se verifica  si la correalcion es mayor a la maxima (ES COMO EL COMPLEMENTO)
-                    es_valido = False
-                    break
-            if es_valido: # si la correlacion es menor o igual a la maxima es valido
-                print("Esto es una accion valida porque es menor o igual a la correlacion maxima", subset)
+            print("Esto es subset (combinando 3)", subset)
+            grafito = Grafo_General.subgraph(subset) #nuevo grafo con las acciones seleccionadas
+            if all(abs(grafito[u][v]['weight']) <= correlacion_maxima for u, v in grafito.edges):
+                print("Esto es un grafo valido ")
+                Mostrar_Grafo(grafito)
+                print("Esto es una accion valida porque es menor o igual a la correlacion minima {correlacion_maxima{}", subset)
                 portafolios_validos.append(subset)
     
     if not portafolios_validos:
         print("No se encontraron portafolios que cumplan con las restricciones dadas.")
         return
-    # Encontrar el portafolio con el rendimiento promedio máximo 
-    max_rendimiento_promedio = 0
-    for portafolio in portafolios_validos: #para cada portafolio valido (lista de acciones)
-        rendimiento_total = 0
-        for accion in portafolio: #para cada accion en el portafolio
-            rendimiento_total += rendimientos[accion] #se suma el rendimiento de cada accion, de acuerdo a lo extraido en el txt
-            rendimiento_promedio = rendimiento_total / len(portafolio) # se va promediando el rendimiento de cada accion (su acumulado)
-            mejor_portafolio = portafolio #asumimos que el mejor portafolio es el primero
-            #max_rendimiento_promedio = rendimiento_promedio #asumimos que el mejor rendimiento promedio es el primero para ir comparando entre los diversos portafolios
-        print(f"Portafolio {portafolio} con rendimiento promedio {rendimiento_promedio}")
+    # Encontrar el portafolio con el rendimiento promedio máximo
+    mejor_portafolio = None
+    max_rendimiento_promedio = -float('inf')
+    for portafolio in portafolios_validos:
+        rendimiento_promedio = sum(rendimientos[accion] for accion in portafolio) / len(portafolio)
         if rendimiento_promedio > max_rendimiento_promedio:
             max_rendimiento_promedio = rendimiento_promedio
             mejor_portafolio = portafolio
-            
+
     # Mostrar resultados
     print(f"Mejor portafolio: {mejor_portafolio}")
     print(f"Rendimiento promedio del mejor portafolio: {max_rendimiento_promedio}")
     print(f"Número total de portafolios válidos: {len(portafolios_validos)}")
-    print(f"Portafolios válidos: {portafolios_validos}")
-    #Mostrar_Grafo(Grafo_General.subgraph(mejor_portafolio))
-    print("\n")
+
+    Dibujar_Grafo(Grafo_General.subgraph(mejor_portafolio))
     
 def portafolio_riesgo_controlado():
     # Aquí iría la lógica para el portafolio con riesgo controlado
@@ -86,7 +77,7 @@ def Mostrar_Grafo(G):
     for edge in G.edges(data=True):
         print(f"{edge[0]} - {edge[1]}: {edge[2]['weight']}")
 
-
+#Mostrar_Grafo(Grafo_General)
 # Crear el grafo
 Grafo_General = nx.Graph()
 with open('correlaciones.txt', 'r') as file:
