@@ -19,7 +19,7 @@ def portafolio_maximo_beneficio(correlacion_maxima, acciones_minimas):
     portafolios_validos = [] # portafolios que cumplen con las condiciones osea que la correlacion sea menor a la maxima
     for i in range(acciones_minimas, len(acciones) + 1): #desde las acciones minimas hasta el total de acciones
         for subset in itertools.combinations(acciones, i): # hacer combinaciones de las acciones
-            print("Esto es subset (combinando 3 en este caso)", subset) #ESTO ES PARA VERIFICAR (DESPUES SE BORRA)
+            print("Esto es subset (combinando 3 en este caso)", subset)
             grafito = Grafo_General.subgraph(subset) #subgrafo con las acciones seleccionadas
             es_valido = True
             for u, v in grafito.edges: #para cada arista en el subgrafo (osea para cada acción)
@@ -59,9 +59,9 @@ def portafolio_riesgo_controlado(correlacion_maxima, acciones_minimas, riesgo_pr
                 accion = parts[0]
                 rendimiento = float(parts[1])
                 riesgo = float(parts[2])
-                rendimientos_riesgo[accion] = (rendimiento, riesgo) #se guarda el rendimiento y el riesgo de cada accion en un diccionario
+                rendimientos_riesgo[accion] = (rendimiento, riesgo) #se guarda el rendimiento y el riesgo de cada accion
     print(rendimientos_riesgo)
-#ESTO ES PARA VISUALIZAR (DESPUES SE BORRA)
+
 def Dibujar_Grafo(G):
     plt.figure(figsize=(10, 10))
     pos = nx.spring_layout(G)

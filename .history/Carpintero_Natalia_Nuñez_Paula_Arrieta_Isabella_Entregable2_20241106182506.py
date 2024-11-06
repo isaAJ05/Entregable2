@@ -19,7 +19,7 @@ def portafolio_maximo_beneficio(correlacion_maxima, acciones_minimas):
     portafolios_validos = [] # portafolios que cumplen con las condiciones osea que la correlacion sea menor a la maxima
     for i in range(acciones_minimas, len(acciones) + 1): #desde las acciones minimas hasta el total de acciones
         for subset in itertools.combinations(acciones, i): # hacer combinaciones de las acciones
-            print("Esto es subset (combinando 3 en este caso)", subset) #ESTO ES PARA VERIFICAR (DESPUES SE BORRA)
+            print("Esto es subset (combinando 3 en este caso)", subset) #ESTO ES DE PRUEBA
             grafito = Grafo_General.subgraph(subset) #subgrafo con las acciones seleccionadas
             es_valido = True
             for u, v in grafito.edges: #para cada arista en el subgrafo (osea para cada acción)

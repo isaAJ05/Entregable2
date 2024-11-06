@@ -19,7 +19,7 @@ def portafolio_maximo_beneficio(correlacion_maxima, acciones_minimas):
     portafolios_validos = [] # portafolios que cumplen con las condiciones osea que la correlacion sea menor a la maxima
     for i in range(acciones_minimas, len(acciones) + 1): #desde las acciones minimas hasta el total de acciones
         for subset in itertools.combinations(acciones, i): # hacer combinaciones de las acciones
-            print("Esto es subset (combinando 3 en este caso)", subset) #ESTO ES PARA VERIFICAR (DESPUES SE BORRA)
+            print("Esto es subset (combinando 3 en este caso)", subset)
             grafito = Grafo_General.subgraph(subset) #subgrafo con las acciones seleccionadas
             es_valido = True
             for u, v in grafito.edges: #para cada arista en el subgrafo (osea para cada acción)
@@ -49,7 +49,28 @@ def portafolio_maximo_beneficio(correlacion_maxima, acciones_minimas):
     return mejor_portafolio, max_rendimiento_promedio, portafolios_validos        
     
     
-def portafolio_riesgo_controlado(correlacion_maxima, acciones_minimas, riesgo_promedio_max):
+def portafolio_riesgo_controlado():
+    while True:
+        correlacion_maxima = float(input("Ingrese la correlación máxima permitida (-1 a 1): "))
+        if -1 <= correlacion_maxima <= 1:
+            break
+        else:
+            print("Por favor, ingrese un valor entre -1 y 1.")
+    with open('correlaciones.txt', 'r') as file:
+        total_acciones = int(file.readline().strip())
+    while True:
+        acciones_minimas = int(input("Número mínimo de acciones deseadas en el portafolio: "))
+        if 0 <= acciones_minimas <= total_acciones:
+            break
+        else:
+            print(f"Por favor, ingrese un valor entre 0 y {total_acciones}.")
+    while True:
+        riesgo_promedio_max = float(input("Ingrese el valor de riesgo promedio maximo de las acciones deseado: "))
+        if 1 <= riesgo_promedio_max <= 10:
+            break
+        else:
+            print("Por favor, ingrese un valor entre 1 y 10.")
+    print(f"Acciones mínimas: {acciones_minimas}\nCorrelación máxima: {correlacion_maxima} \nRiesgo promedio: {riesgo_promedio_max}")
     # Leer rendimientos de las acciones
     rendimientos_riesgo = {}
     with open('rendimientos.txt', 'r') as file:
@@ -59,9 +80,9 @@ def portafolio_riesgo_controlado(correlacion_maxima, acciones_minimas, riesgo_pr
                 accion = parts[0]
                 rendimiento = float(parts[1])
                 riesgo = float(parts[2])
-                rendimientos_riesgo[accion] = (rendimiento, riesgo) #se guarda el rendimiento y el riesgo de cada accion en un diccionario
+                rendimientos_riesgo[accion] = (rendimiento, riesgo)
     print(rendimientos_riesgo)
-#ESTO ES PARA VISUALIZAR (DESPUES SE BORRA)
+
 def Dibujar_Grafo(G):
     plt.figure(figsize=(10, 10))
     pos = nx.spring_layout(G)
@@ -117,30 +138,10 @@ while True:
         print(f"Rendimiento promedio del mejor portafolio: {max_rendimiento_promedio}")
         print(f"Número total de portafolios válidos: {len(portafolios_validos)}")
         print(f"Portafolios válidos: {portafolios_validos}")
-        print("\n")
+    #Mostrar_Grafo(Grafo_General.subgraph(mejor_portafolio))
+    print("\n")
     elif opcion == '2':
-        while True:
-            correlacion_maxima = float(input("Ingrese la correlación máxima permitida (-1 a 1): "))
-            if -1 <= correlacion_maxima <= 1:
-                break
-            else:
-                print("Por favor, ingrese un valor entre -1 y 1.")
-        with open('correlaciones.txt', 'r') as file:
-            total_acciones = int(file.readline().strip())
-        while True:
-            acciones_minimas = int(input("Número mínimo de acciones deseadas en el portafolio: "))
-            if 0 <= acciones_minimas <= total_acciones:
-                break
-            else:
-                print(f"Por favor, ingrese un valor entre 0 y {total_acciones}.")
-        while True:
-            riesgo_promedio_max = float(input("Ingrese el valor de riesgo promedio maximo de las acciones deseado: "))
-            if 1 <= riesgo_promedio_max <= 10:
-                break
-            else:
-                print("Por favor, ingrese un valor entre 1 y 10.")
-        print(f"Acciones mínimas: {acciones_minimas}\nCorrelación máxima: {correlacion_maxima} \nRiesgo promedio: {riesgo_promedio_max}")
-        portafolio_riesgo_controlado(correlacion_maxima, acciones_minimas, riesgo_promedio_max)
+        portafolio_riesgo_controlado()
     elif opcion == '3':
         print("Hasta luego!")
         break
