@@ -29,10 +29,11 @@ with open('correlaciones.txt', 'r') as file:
             correlacion = float(parts[2])
             correlaciones[(accion1, accion2)] = correlacion  # guardar la correlación entre las acciones
             correlaciones[(accion2, accion1)] = correlacion  # guardar la correlación entre las acciones
-#print(correlaciones)
+print(correlaciones)
 for key in list(correlaciones.keys()):
-        if correlaciones[key] > correlacion_maxima: # si la correlación es mayor a la máxima permitida
-            del correlaciones[key] # eliminar la correlación (para asegurar que no se seleccionen acciones con correlaciones mayores a la máxima permitida)
+        if correlaciones[key] > correlacion_maxima:
+            del correlaciones[key]
+        correlaciones.pop(i)
 print(correlaciones)
 """""
 with open('rendimientos.txt', 'r') as file:

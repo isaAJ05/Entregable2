@@ -32,7 +32,7 @@ with open('correlaciones.txt', 'r') as file:
 #print(correlaciones)
 for key in list(correlaciones.keys()):
         if correlaciones[key] > correlacion_maxima: # si la correlación es mayor a la máxima permitida
-            del correlaciones[key] # eliminar la correlación (para asegurar que no se seleccionen acciones con correlaciones mayores a la máxima permitida)
+            del correlaciones[key]
 print(correlaciones)
 """""
 with open('rendimientos.txt', 'r') as file:
