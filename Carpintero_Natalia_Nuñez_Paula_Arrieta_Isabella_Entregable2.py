@@ -16,13 +16,13 @@ def portafolio_maximo_beneficio(correlacion_maxima, acciones_minimas):
                 accion = parts[0]
                 rendimiento = float(parts[1]) 
                 rendimientos[accion] = rendimiento 
-    print(rendimientos)
+    # print(rendimientos)
     
     acciones = list(Grafo_General.nodes) #Nodos del grafo son las acciones
     portafolios_validos = [] # portafolios que cumplen con las condiciones osea que la correlacion sea menor a la maxima
     for i in range(acciones_minimas, len(acciones) + 1): #desde las acciones minimas hasta el total de acciones
         for subset in itertools.combinations(acciones, i): # hacer combinaciones de las acciones
-            #print("Esto es subset (combinando 3 en este caso)", subset) #ESTO ES PARA VERIFICAR (DESPUES SE BORRA)
+            # print("Esto es subset (combinando 3 en este caso)", subset)
             grafito = Grafo_General.subgraph(subset) #subgrafo con las acciones seleccionadas
             es_valido = True
             for u, v in grafito.edges: #para cada arista en el subgrafo (osea para cada acción)
@@ -30,7 +30,7 @@ def portafolio_maximo_beneficio(correlacion_maxima, acciones_minimas):
                     es_valido = False
                     break
             if es_valido: # si la correlacion es menor o igual a la maxima es valido
-                print("Esto es una accion valida porque es menor o igual a la correlacion maxima", subset)
+                # print("Esto es una accion valida porque es menor o igual a la correlacion maxima", subset)
                 portafolios_validos.append(subset)
     
     if not portafolios_validos: # validación en caso de que ninguno cumpla
@@ -45,7 +45,7 @@ def portafolio_maximo_beneficio(correlacion_maxima, acciones_minimas):
                 rendimiento_promedio = rendimiento_total / len(portafolio) # se va promediando el rendimiento de cada accion (su acumulado)
                 mejor_portafolio = portafolio #asumimos que el mejor portafolio es el primero
                 #max_rendimiento_promedio = rendimiento_promedio #asumimos que el mejor rendimiento promedio es el primero para ir comparando entre los diversos portafolios
-            print(f"Portafolio {portafolio} con rendimiento promedio {rendimiento_promedio}")
+            # print(f"Portafolio {portafolio} con rendimiento promedio {rendimiento_promedio}")
             if rendimiento_promedio > max_rendimiento_promedio:
                 max_rendimiento_promedio = rendimiento_promedio
                 mejor_portafolio = portafolio
@@ -65,7 +65,7 @@ def portafolio_riesgo_controlado(correlacion_maxima, acciones_minimas, riesgo_pr
                     rendimiento = float(parts[1])
                     riesgo = float(parts[2])
                     rendimientos_riesgo[accion] = (rendimiento, riesgo) #se guarda el rendimiento y el riesgo de cada accion en un diccionario
-        print(rendimientos_riesgo)
+        # print(rendimientos_riesgo)
         portafolios_validos_riesgo = [] # portafolios que cumplen con las condiciones osea que la correlacion sea menor a la maxima y el riesgo promedio sea menor al maximo
         for portafolio in portafolios_validos: # recorrer en los portafolios validos de maximo beneficio
             riesgo_total = 0
@@ -86,7 +86,7 @@ def portafolio_riesgo_controlado(correlacion_maxima, acciones_minimas, riesgo_pr
                     rendimiento_total += rendimientos_riesgo[accion][0] #se suma el rendimiento de cada accion, de acuerdo a lo extraido en el txt
                 rendimiento_promedio = rendimiento_total / len(portafolio) # se va promediando el rendimiento de cada accion (su acumulado)
                 mejor_portafolio = portafolio #asumimos que el mejor portafolio es el primero
-                print(f"Portafolio {portafolio} con rendimiento promedio {rendimiento_promedio} y riesgo promedio {riesgo_promedio}")
+                # print(f"Portafolio {portafolio} con rendimiento promedio {rendimiento_promedio} y riesgo promedio {riesgo_promedio}")
                 if rendimiento_promedio > max_rendimiento_promedio: # comparaciones para saber cuál es el mejor
                     max_rendimiento_promedio = rendimiento_promedio
                     mejor_portafolio = portafolio
@@ -147,8 +147,7 @@ while True:
                 break
             else:
                 print(f"Por favor, ingrese un valor entre 0 y {total_acciones}.")
-        # Reitera datos:
-        print(f"Acciones mínimas: {acciones_minimas}\nCorrelación máxima: {correlacion_maxima}")
+        # print(f"Acciones mínimas: {acciones_minimas}\nCorrelación máxima: {correlacion_maxima}")
         _, _, portafolios_validos = portafolio_maximo_beneficio(correlacion_maxima, acciones_minimas)
         if portafolios_validos: # Si existen portafolios válidos, dar la información
             mejor_portafolio, max_rendimiento_promedio, portafolios_validos= portafolio_maximo_beneficio(correlacion_maxima, acciones_minimas)
@@ -180,8 +179,7 @@ while True:
                 break
             else:
                 print("Por favor, ingrese un valor entre 1 y 10.")
-        # Reitera datos:
-        print(f"Acciones mínimas: {acciones_minimas}\nCorrelación máxima: {correlacion_maxima} \nRiesgo promedio: {riesgo_promedio_max}")
+        # print(f"Acciones mínimas: {acciones_minimas}\nCorrelación máxima: {correlacion_maxima} \nRiesgo promedio: {riesgo_promedio_max}")
         _, _, portafolios_validos_riesgo = portafolio_riesgo_controlado(correlacion_maxima, acciones_minimas, riesgo_promedio_max)
         if portafolios_validos_riesgo: # Si existen portafolios válidos, dar la información
             mejor_portafolio, max_rendimiento_promedio, portafolios_validos_riesgo= portafolio_riesgo_controlado(correlacion_maxima, acciones_minimas, riesgo_promedio_max)
